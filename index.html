@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تريندي | Trendify - براند الملابس والإكسسوارات العصري</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: '#000000', /* لون أسود ملكي للتصميم الكلاسيكي الفخم */
+                        brandGold: '#D4AF37', /* ذهبي خفيف للتنبيهات أو أزرار الشراء */
+                        softBg: '#F9F9F9'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+    </style>
+</head>
+<body class="bg-softBg text-neutral-800 antialiased overflow-x-hidden">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-40 border-b border-neutral-100 transition-all duration-300">
+        <div class="container mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
+            
+            <a href="#" class="text-2xl font-black tracking-widest text-neutral-900">
+                TREND<span class="text-brandGold font-light">IFY</span>
+            </a>
+
+            <nav class="hidden md:flex space-x-reverse space-x-8 text-sm font-semibold text-neutral-600">
+                <a href="#" class="text-neutral-950 transition-colors">الرئيسية</a>
+                <a href="#shop" class="hover:text-neutral-950 transition-colors">المتجر</a>
+                <a href="#about" class="hover:text-neutral-950 transition-colors">قصتنا</a>
+            </nav>
+
+            <div class="flex items-center gap-6">
+                <button id="cart-icon-btn" class="relative text-xl text-neutral-800 hover:text-brandGold transition-colors focus:outline-none">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span id="cart-count" class="absolute -top-2 -left-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white animate-bounce">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="pt-24 min-h-[75vh] flex items-center bg-zinc-100 relative overflow-hidden">
+        <div class="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6 z-10">
+                <span class="text-brandGold font-bold uppercase tracking-widest text-sm block">وصل حديثاً - كوليكشن الصيف</span>
+                <h2 class="text-4xl md:text-6xl font-black text-neutral-950 leading-tight">
+                    البساطة هي <br>سر <span class="underline decoration-brandGold">الأناقة</span>
+                </h2>
+                <p class="text-neutral-600 text-sm md:text-base max-w-md font-light leading-relaxed">
+                    اكتشف تشكيلتنا الجديدة المصممة بعناية فائقة لتمنحك الراحة والمظهر العصري الجذاب في كل أوقاتك.
+                </p>
+                <div>
+                    <a href="#shop" class="bg-accent hover:bg-neutral-800 text-white px-8 py-3.5 rounded-none font-bold text-sm tracking-wide transition-all duration-300 inline-block shadow-lg">تسوّق الآن</a>
+                </div>
+            </div>
+            <div class="hidden md:block relative h-[600px]">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80" alt="كوليكشن ملابس فخم" class="w-full h-full object-cover rounded-none shadow-2xl">
+                <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-brandGold/20 -z-10"></div>
+            </div>
+        </div>
+    </section>
+
+    <main id="shop" class="container mx-auto px-4 md:px-8 py-20">
+        
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 border-b border-neutral-200 pb-6">
+            <div>
+                <h3 class="text-2xl font-bold text-neutral-950">تصفح منتجاتنا المميزة</h3>
+                <p class="text-xs text-neutral-400 mt-1">شحن سريع لكافة محافظات مصر</p>
+            </div>
+            <div class="flex flex-wrap gap-2" id="filter-buttons">
+                <button class="filter-btn active bg-accent text-white text-xs font-bold px-4 py-2 transition-all rounded-none" data-category="all">الكل</button>
+                <button class="filter-btn bg-white hover:bg-neutral-100 text-neutral-800 text-xs font-bold px-4 py-2 border border-neutral-200 transition-all rounded-none" data-category="clothes">ملابس</button>
+                <button class="filter-btn bg-white hover:bg-neutral-100 text-neutral-800 text-xs font-bold px-4 py-2 border border-neutral-200 transition-all rounded-none" data-category="shoes">أحذية</button>
+                <button class="filter-btn bg-white hover:bg-neutral-100 text-neutral-800 text-xs font-bold px-4 py-2 border border-neutral-200 transition-all rounded-none" data-category="accessories">إكسسوارات</button>
+            </div>
+        </div>
+
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            </div>
+    </main>
+
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div id="cart-overlay" class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"></div>
+
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10 sm:pl-0">
+            <div class="w-screen max-w-md bg-white h-full flex flex-col shadow-2xl animate__animated animate__slideInRight">
+                <div class="p-6 border-b border-neutral-100 flex justify-between items-center bg-neutral-50">
+                    <h3 class="text-lg font-bold text-neutral-950 flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-brandGold"></i> سلة مشترياتك
+                    </h3>
+                    <button id="close-cart-btn" class="text-neutral-500 hover:text-neutral-950 text-2xl focus:outline-none">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <div class="text-center text-neutral-400 py-12">السلة فارغة حالياً.</div>
+                </div>
+
+                <div class="p-6 border-t border-neutral-100 bg-neutral-50 space-y-4">
+                    <div class="flex justify-between items-center text-sm font-bold text-neutral-900">
+                        <span>إجمالي المنتجات:</span>
+                        <span id="cart-subtotal">0 ج.م</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-neutral-500">
+                        <span>مصاريف الشحن (ثابت لكل مصر):</span>
+                        <span>50 ج.م</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base font-black text-neutral-950 pt-2 border-t border-dashed border-neutral-200">
+                        <span>الحساب الإجمالي الكلي:</span>
+                        <span id="cart-total">0 ج.م</span>
+                    </div>
+                    <button id="checkout-btn" disabled class="w-full bg-accent hover:bg-neutral-800 disabled:bg-neutral-300 text-white font-bold py-3 transition-colors text-sm tracking-wide shadow-lg text-center">إتمام الطلب وتأكيد الشحن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 hidden">
+        <div class="bg-white rounded-none max-w-md w-full p-8 shadow-2xl relative">
+            <button id="close-modal-btn" class="absolute top-4 left-4 text-neutral-500 hover:text-neutral-950 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold text-neutral-950 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-truck-fast text-brandGold"></i> عنوان شحن المنتج
+            </h3>
+            <p class="text-xs text-neutral-500 mb-6">يرجى تسجيل بياناتك بشكل دقيق لسرعة تسليم الطلب.</p>
+
+            <form id="checkout-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-neutral-700 mb-1">الاسم بالكامل</label>
+                    <input type="text" id="cust-name" required placeholder="مثال: أحمد محمد علي" class="w-full border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-neutral-700 mb-1">رقم الهاتف (للتواصل عند التسليم)</label>
+                    <input type="tel" id="cust-phone" required placeholder="01xxxxxxxxx" class="w-full border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-neutral-700 mb-1">العنوان بالتفصيل (المحافظة والمدينة والشارع)</label>
+                    <textarea id="cust-address" required rows="3" placeholder="مثال: القاهرة، التجمع الخامس، شارع التسعين، عمارة 12" class="w-full border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:border-accent resize-none"></textarea>
+                </div>
+                <div class="bg-neutral-50 p-4 border border-neutral-200 space-y-1 text-xs">
+                    <p class="flex justify-between"><span>إجمالي الأوردر:</span><span id="modal-subtotal">0 ج.م</span></p>
+                    <p class="flex justify-between"><span>مصاريف التوصيل:</span><span>50 ج.م</span></p>
+                    <p class="flex justify-between font-bold text-neutral-950 pt-1 border-t border-dashed border-neutral-200"><span>المطلوب دفعه عند الاستلام:</span><span id="modal-total">0 ج.م</span></p>
+                </div>
+                <button type="submit" class="w-full bg-accent hover:bg-neutral-800 text-white font-bold py-3 text-sm transition-all shadow-md">تأكيد أوردر الشراء</button>
+            </form>
+        </div>
+    </div>
+
+    <footer id="about" class="bg-neutral-950 text-neutral-400 pt-16 pb-8 border-t border-neutral-900">
+        <div class="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            <div class="space-y-4">
+                <h4 class="text-white text-lg font-bold">حول TRENDIFY</h4>
+                <p class="text-xs leading-relaxed font-light">نحن نؤمن بأن الأناقة لا تحتاج للتكلف. براند مصري بلمسات عالمية يقدم لك قطعاً مستدامة وجميلة لتناسب رحلتك اليومية بكل رقي.</p>
+            </div>
+            <div class="space-y-4">
+                <h4 class="text-white text-lg font-bold">روابط تهمك</h4>
+                <ul class="space-y-2 text-xs font-light">
+                    <li><a href="#" class="hover:text-white transition-colors">الشروط والأحكام</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">سياسة الاستبدال والاسترجاع (خلال 14 يوم)</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">تتبع الشحنة</a></li>
+                </ul>
+            </div>
+            <div class="space-y-4">
+                <h4 class="text-white text-lg font-bold">اتصل بنا</h4>
+                <p class="text-xs font-light">سعداء بخدمتك دائماً على مدار الـ 24 ساعة.</p>
+                <div class="flex gap-4 text-white text-lg">
+                    <a href="#" class="hover:text-brandGold transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-brandGold transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-brandGold transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-neutral-900 pt-8 text-center text-xs text-neutral-600">
+            <p>&copy; 2026 Trendify. جميع الحقوق محفوظة لبراند تريندي.</p>
+        </div>
+    </footer>
+
+    <script src="store.js"></script>
+</body>
+</html>
