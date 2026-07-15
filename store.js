@@ -6,74 +6,14 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // 1. قاعدة بيانات المنتجات الافتراضية (Products DB)
-    // ==========================================
-    const products = [
-        {
-            id: 101,
-            name: "قميص كلاسيك كتان - بيج",
-            category: "clothes",
-            price: 650,
-            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=400&q=80",
-            rating: 5
-        },
-        {
-            id: 102,
-            name: "تيشيرت أوفرسايز قطن - أسود",
-            category: "clothes",
-            price: 450,
-            image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80",
-            rating: 4
-        },
-        {
-            id: 103,
-            name: "حذاء رياضي مريح - أبيض ناصع",
-            category: "shoes",
-            price: 950,
-            image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80",
-            rating: 5
-        },
-        {
-            id: 104,
-            name: "ساعة كلاسيكية بسوار جلدي",
-            category: "accessories",
-            price: 1200,
-            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80",
-            rating: 4
-        },
-        {
-            id: 105,
-            name: "نظارة شمسية عصرية - إطار ذهبي",
-            category: "accessories",
-            price: 350,
-            image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=400&q=80",
-            rating: 5
-        },
-        {
-            id: 106,
-            name: "فستان صيفي مشجر ناعم",
-            category: "clothes",
-            price: 850,
-            image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80",
-            rating: 4
-        },
-        {
-            id: 107,
-            name: "حذاء كلاسيكي جلدي فاخر",
-            category: "shoes",
-            price: 1100,
-            image: "https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=400&q=80",
-            rating: 5
-        },
-        {
-            id: 108,
-            name: "حقيبة يد كاجوال مبطنة",
-            category: "accessories",
-            price: 700,
-            image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80",
-            rating: 4
-        }
-    ];
+   // المنتجات الافتراضية اللي بتظهر أول ما الموقع يفتح لأول مرة
+const defaultProducts = [
+    { id: 1, name: "تيشيرت صيفي قطن", price: 350, category: "clothes", image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400" },
+    { id: 2, name: "كوتشي رياضي فخم", price: 650, category: "shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" }
+];
+
+// قراءة المنتجات من الـ Local Storage (عشان لو العميل ضاف حاجة تظهر)
+const products = JSON.parse(localStorage.getItem('store_products')) || defaultProducts;
 
     // ==========================================
     // 2. استدعاء عناصر الواجهة (DOM Elements)
@@ -347,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageText = `مرحباً Trendify ✨\nلقد قمت بطلب أوردر جديد من المتجر الإلكتروني ببيانات الشحن التالية:\n\n👤 *الاسم:* ${name}\n📞 *رقم الهاتف:* ${phone}\n📍 *العنوان:* ${address}\n\n📦 *تفاصيل المنتجات المطلوبة:*\n${productsSummary}\n\n💰 *الحساب الإجمالي:* ${finalTotal.toLocaleString()} ج.م (شامل التوصيل)\n\nيرجى تأكيد الطلب وبدء عملية الشحن في أقرب وقت. شكراً لكم!`;
 
         // رقم واتساب براند المبيعات (حط رقم المبيعات هنا، مجهز برقم وهمي حالياً)
-        const whatsappNumber = "201000000000"; 
+        const whatsappNumber = "201212787137"; 
         const encodedText = encodeURIComponent(messageText);
         
         // فتح واتساب فوراً بالرسالة المنسقة
