@@ -12,8 +12,8 @@ async function fetchProductsFromSheet() {
         const response = await fetch(googleSheetCSVURL);
         const data = await response.text();
         
-        // تحويل نص الـ CSV إلى مصفوفة جافا سكريبت (Array)
-        const rows = data.split("\n").slice(1); // تجاهل السطر الأول (العناوين)
+        // تحويل نص الـ CSV إلى مصفوفة جافا سكريبت
+        const rows = data.split("\n").slice(1); 
         
         const products = rows.map(row => {
             const columns = row.split(",");
@@ -25,19 +25,19 @@ async function fetchProductsFromSheet() {
                 image: columns[4]?.trim(),
                 category: columns[5]?.trim()
             };
-        }).filter(p => p.name); // تصفية السطور الفاضية
+        }).filter(p => p.name); 
 
-        // حفظ المنتجات في اللوكال ستورج وتشغيل دالة العرض عندك
+        // 🔥 هنا السحر: هنخزن المنتجات الجديدة في الـ Local Storage مكان القديمة
         localStorage.setItem('store_products', JSON.stringify(products));
         
-        // هنا بتنادي على الدالة اللي بتعرض المنتجات في موقعك (تأكد من اسمها عندك)
-        displayProducts(products); 
+        // إعادة تحميل الصفحة مرة واحدة فقط لتحديث المنتجات تلقائياً بأمان
+        if (!sessionStorage.getItem('reloaded')) {
+            sessionStorage.setItem('reloaded', 'true');
+            window.location.reload();
+        }
 
     } catch (error) {
         console.error("فشل في جلب المنتجات من جوجل شيت:", error);
-        // لو حصل مشكلة شغل المنتجات الاحتياطية القديمة
-        const backupProducts = JSON.parse(localStorage.getItem('store_products')) || [];
-        displayProducts(backupProducts);
     }
 }
 
