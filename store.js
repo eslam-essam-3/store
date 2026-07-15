@@ -266,43 +266,64 @@ const products = JSON.parse(localStorage.getItem('store_products')) || defaultPr
         document.body.classList.remove('overflow-hidden');
     }
 
-    closeModalBtn.addEventListener('click', closeCheckoutModal);
+    closeModalBtn.addEventListener('click', closeCheckoutModal); 
 
-    // ==========================================
-    // 6. تأكيد الطلب الفخم وإرساله (Checkout Submit)
-    // ==========================================
-    checkoutForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    function sendOrderToTelegram() {
+    const name = document.getElementById('customer-name').value;
+    const address = document.getElementById('customer-address').value;
+    
+    if (!name || !address) {
+        alert("برجاء ملء بيانات الاسم والعنوان أولاً!");
+        return;
+    }
 
-        const name = document.getElementById('cust-name').value.trim();
-        const phone = document.getElementById('cust-phone').value.trim();
-        const address = document.getElementById('cust-address').value.trim();
-
-        // تجميع المنتجات المطلوبة لشكل رسالة نصية فخمة
-        let productsSummary = cart.map(item => `- ${item.name} (عدد: ${item.quantity} قطع)`).join('\n');
-        let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        let finalTotal = subtotal + 50;
-
-        // صياغة رسالة واتساب رائعة واحترافية تُرسل فوراً لبراند المبيعات!
-        const messageText = `مرحباً Trendify ✨\nلقد قمت بطلب أوردر جديد من المتجر الإلكتروني ببيانات الشحن التالية:\n\n👤 *الاسم:* ${name}\n📞 *رقم الهاتف:* ${phone}\n📍 *العنوان:* ${address}\n\n📦 *تفاصيل المنتجات المطلوبة:*\n${productsSummary}\n\n💰 *الحساب الإجمالي:* ${finalTotal.toLocaleString()} ج.م (شامل التوصيل)\n\nيرجى تأكيد الطلب وبدء عملية الشحن في أقرب وقت. شكراً لكم!`;
-
-        // رقم واتساب براند المبيعات (حط رقم المبيعات هنا، مجهز برقم وهمي حالياً)
-        const whatsappNumber = "201212787137"; 
-        const encodedText = encodeURIComponent(messageText);
-        
-        // فتح واتساب فوراً بالرسالة المنسقة
-        window.open(`https://wa.me/${whatsappNumber}?text=${encodedText}`, '_blank');
-
-        // تنظيف السلة وإعادة تهيئة التطبيق
-        cart = [];
-        saveCart();
-        updateCartUI();
-        closeCheckoutModal();
-        
-        alert("تم تسجيل طلبك بنجاح! سيتم توجيهك الآن للواتساب لتأكيد الشحن الفوري مع خدمة العملاء.");
+    // تجهيز نص الرسالة
+    let orderDetails = `🛒 *أوردر جديد يا إسلام!*\n\n`;
+    orderDetails += `👤 *العميل:* ${name}\n`;
+    orderDetails += `📍 *العنوان:* ${address}\n\n`;
+    orderDetails += `📦 *المنتجات المطلوبة:*\n`;
+    
+    // التكرار على عناصر السلة (cart)
+    cart.forEach(item => {
+        orderDetails += `- ${item.name} (العدد: ${item.quantity})\n`;
     });
+    
+    // حساب الإجمالي (بناءً على المعادلة اللي عندك في سطر 256)
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = subtotal + 50; // الحساب الإجمالي شامل الشحن (50 جنيه)
+    
+    orderDetails += `\n💰 *الحساب الإجمالي:* ${total} ج.م`;
 
-    // تشغيل المتجر فور تحميل الصفحة
-    renderProducts();
-    updateCartUI();
-});
+    const botToken = "8707402221:AAExZ5C1Qx7LzkKECNL-WzH8eSX0uHioVPM";
+    const chatId = "اكتب_هنا_رقم_ال_ID_بتاعك"; // ضع الـ Chat ID الشخصي بتاعك هنا
+    const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+    // إرسال الطلب لتليجرام
+    fetch(telegramURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: orderDetails,
+            parse_mode: "Markdown"
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("تم تسجيل طلبك بنجاح! سيتم التواصل معك لتأكيد الشحن الفوري.");
+            cart = [];
+            localStorage.removeItem('cart');
+            updateCartUI();
+            
+            // قفل نافذة الفواتير (Modal) تلقائياً بعد نجاح الطلب
+            closeCheckoutModal();
+        } else {
+            alert("حدثت مشكلة أثناء إرسال الطلب، يرجى المحاولة مرة أخرى.");
+        }
+    })
+    .catch(error => {
+        console.error("Error sending to Telegram:", error);
+        alert("عفواً، حدث خطأ في الاتصال.");
+    });
+    }
+    });
