@@ -268,37 +268,40 @@ const products = JSON.parse(localStorage.getItem('store_products')) || defaultPr
 
     closeModalBtn.addEventListener('click', closeCheckoutModal); 
 
-    function sendOrderToTelegram() {
-    const name = document.getElementById('customer-name').value;
-    const address = document.getElementById('customer-address').value;
+   function checkout() {
+    // جلب البيانات بالـ IDs المتوقعة في كودك القديم (الاسم، الهاتف، العنوان)
+    const name = document.getElementById('customer-name')?.value || document.getElementById('name')?.value;
+    const phone = document.getElementById('customer-phone')?.value || document.getElementById('phone')?.value;
+    const address = document.getElementById('customer-address')?.value || document.getElementById('address')?.value;
     
     if (!name || !address) {
         alert("برجاء ملء بيانات الاسم والعنوان أولاً!");
         return;
     }
 
-    // تجهيز نص الرسالة
+    // تجهيز نص الرسالة لتليجرام
     let orderDetails = `🛒 *أوردر جديد يا إسلام!*\n\n`;
     orderDetails += `👤 *العميل:* ${name}\n`;
+    orderDetails += `📞 *الهاتف:* ${phone}\n`;
     orderDetails += `📍 *العنوان:* ${address}\n\n`;
     orderDetails += `📦 *المنتجات المطلوبة:*\n`;
     
-    // التكرار على عناصر السلة (cart)
     cart.forEach(item => {
         orderDetails += `- ${item.name} (العدد: ${item.quantity})\n`;
     });
     
-    // حساب الإجمالي (بناءً على المعادلة اللي عندك في سطر 256)
+    // حساب الإجمالي مع الشحن (50 جنيه)
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const total = subtotal + 50; // الحساب الإجمالي شامل الشحن (50 جنيه)
+    const total = subtotal + 50; 
     
     orderDetails += `\n💰 *الحساب الإجمالي:* ${total} ج.م`;
 
     const botToken = "8707402221:AAExZ5C1Qx7LzkKECNL-WzH8eSX0uHioVPM";
-    const chatId = "اكتب_هنا_رقم_ال_ID_بتاعك"; // ضع الـ Chat ID الشخصي بتاعك هنا
+    // تأكد انك كتبت الـ Chat ID بتاعك هنا مكان الرقم اللي تحت ده
+    const chatId = "5076413643"; 
     const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-    // إرسال الطلب لتليجرام
+    // إرسال الطلب
     fetch(telegramURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -314,16 +317,16 @@ const products = JSON.parse(localStorage.getItem('store_products')) || defaultPr
             cart = [];
             localStorage.removeItem('cart');
             updateCartUI();
-            
-            // قفل نافذة الفواتير (Modal) تلقائياً بعد نجاح الطلب
-            closeCheckoutModal();
+            if (typeof closeCheckoutModal === "function") {
+                closeCheckoutModal(); // قفل النافذة لو الدالة موجودة
+            }
         } else {
-            alert("حدثت مشكلة أثناء إرسال الطلب، يرجى المحاولة مرة أخرى.");
+            alert("حدثت مشكلة أثناء إرسال الطلب للتليجرام.");
         }
     })
     .catch(error => {
-        console.error("Error sending to Telegram:", error);
+        console.error("Error:", error);
         alert("عفواً، حدث خطأ في الاتصال.");
     });
-    }
+}
     });
