@@ -4,13 +4,45 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+// حط هنا رابط الـ CSV اللي أخدته من جوجل شيت
+const googleSheetCSVURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQRG16QORrPZSdLum8uWso1E5rsdqVA1vG79XtJvlais9ksPGaze8mL8eJv7Nw1kytmwOlFy2OMue58/pub?output=csv";
 
-    // ==========================================
-   // المنتجات الافتراضية اللي بتظهر أول ما الموقع يفتح لأول مرة
-const defaultProducts = [
-    { id: 1, name: "تيشيرت صيفي قطن", price: 350, category: "clothes", image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400" },
-    { id: 2, name: "كوتشي رياضي فخم", price: 650, category: "shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" }
-];
+async function fetchProductsFromSheet() {
+    try {
+        const response = await fetch(googleSheetCSVURL);
+        const data = await response.text();
+        
+        // تحويل نص الـ CSV إلى مصفوفة جافا سكريبت (Array)
+        const rows = data.split("\n").slice(1); // تجاهل السطر الأول (العناوين)
+        
+        const products = rows.map(row => {
+            const columns = row.split(",");
+            return {
+                id: columns[0]?.trim(),
+                name: columns[1]?.trim(),
+                price: Number(columns[2]?.trim()),
+                originalPrice: Number(columns[3]?.trim()),
+                image: columns[4]?.trim(),
+                category: columns[5]?.trim()
+            };
+        }).filter(p => p.name); // تصفية السطور الفاضية
+
+        // حفظ المنتجات في اللوكال ستورج وتشغيل دالة العرض عندك
+        localStorage.setItem('store_products', JSON.stringify(products));
+        
+        // هنا بتنادي على الدالة اللي بتعرض المنتجات في موقعك (تأكد من اسمها عندك)
+        displayProducts(products); 
+
+    } catch (error) {
+        console.error("فشل في جلب المنتجات من جوجل شيت:", error);
+        // لو حصل مشكلة شغل المنتجات الاحتياطية القديمة
+        const backupProducts = JSON.parse(localStorage.getItem('store_products')) || [];
+        displayProducts(backupProducts);
+    }
+}
+
+// تشغيل الجلب التلقائي أول ما الصفحة تفتح
+document.addEventListener('DOMContentLoaded', fetchProductsFromSheet);
 
 // قراءة المنتجات من الـ Local Storage (عشان لو العميل ضاف حاجة تظهر)
 const products = JSON.parse(localStorage.getItem('store_products')) || defaultProducts;
