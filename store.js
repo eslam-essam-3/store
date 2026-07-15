@@ -298,7 +298,7 @@ const products = JSON.parse(localStorage.getItem('store_products')) || defaultPr
 
     const botToken = "8707402221:AAExZ5C1Qx7LzkKECNL-WzH8eSX0uHioVPM";
     // تأكد انك كتبت الـ Chat ID بتاعك هنا مكان الرقم اللي تحت ده
-    const chatId = "5076413643"; 
+    const chatId = "5758140937"; 
     const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
     // إرسال الطلب
